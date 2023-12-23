@@ -1,0 +1,29 @@
+{
+  "Files": [
+    {
+      "Id": "D:\\code\\blazorSnake\\blazorSnake.Client\\bin\\Debug\\net8.0\\wwwroot\\_framework\\blazor.webassembly.js",
+      "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js"
+    },
+    {
+      "Id": "D:\\code\\blazorSnake\\blazorSnake.Client\\obj\\Debug\\net8.0\\compressed\\puzov8h3sa.gz",
+      "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js.gz"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.blazorSnake.Client.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.blazorSnake.Client.props",
+      "PackagePath": "build\\blazorSnake.Client.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.blazorSnake.Client.props",
+      "PackagePath": "buildMultiTargeting\\blazorSnake.Client.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.blazorSnake.Client.props",
+      "PackagePath": "buildTransitive\\blazorSnake.Client.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

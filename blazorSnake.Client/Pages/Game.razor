@@ -1,0 +1,132 @@
+﻿@page "/"
+@rendermode InteractiveWebAssembly
+
+<PageTitle>Counter</PageTitle>
+
+<p>@(snake.IsAlive()? "" : "Game Over")</p>
+
+<input type="number"  @bind-value=gamespeed max="10" />
+<button @onclick="Reset">Reset</button>
+
+<div class="game" @ref="fieldElem" tabindex="0" @onfocusout="Refocus" @onkeydown="KeyHandler">
+
+    <table class="field">
+
+        @for (int y = 0; y < field.field.GetLength(1); y++)
+        {
+            <tr>
+                @for (int x = 0; x < field.field.GetLength(0); x++)
+                {
+                    int X = x;
+                    int Y = y;
+                    <td class="box @(GetBoxClass(X, Y))"></td>
+                }
+            </tr>
+        }
+
+    </table>
+
+</div>
+
+@code {
+    private int Width = 15;
+    private int Height = 15;
+    private Field field;
+    private Snake snake;
+    private Snake.Moves lastMove;
+    private bool GameRunning = true;
+    private int ind = 0;
+
+    ElementReference fieldElem;
+    ElementReference gameSpeedElem;
+    int gamespeed = 4;
+
+    private async Task S()
+    {
+        while (snake.IsAlive())
+        {
+                field = snake.Move(lastMove, field);
+                ind++;
+                await Task.Delay(CalcGameSpeed());
+                await InvokeAsync(() => StateHasChanged());
+                GC.Collect();
+        }
+        throw new Exception("dood");
+    }
+
+    private int CalcGameSpeed()
+    {
+        int snakeOffset = snake.GetLength() * 30;
+        return Math.Max(100,  ((10 - (gamespeed - 1)) * 100) - snakeOffset);
+    }
+
+    private void Reset()
+    {
+        field = new(Width, Height);
+        snake = new(new(7, 13));
+        lastMove = Snake.Moves.Up;
+        Task.Run(() => S());
+    }
+
+    private string GetBoxClass(int x, int y)
+    {
+        string t = "";
+        switch (field.field[x, y])
+        {
+            case BoxValues.Snake:
+                return "snake";
+            case BoxValues.Food:
+                return "food";
+            default:
+                return "empty";
+        }
+    }
+
+    private void Refocus()
+    {
+        Console.WriteLine("refoces");
+        fieldElem.FocusAsync();
+    }
+
+    private void KeyHandler(KeyboardEventArgs e)
+    {
+        string key = e.Key.ToLower().Replace("arrow", "");
+
+        switch (key)
+        {
+            case "w":
+                key = "Up";
+                break;
+            case "s":
+                key = "Down";
+                break;
+            case "a":
+                key = "Left";
+                break;
+            case "d":
+                key = "Right";
+                break;
+        }
+
+        try
+        {
+            Snake.Moves move = (Snake.Moves) Enum.Parse(typeof(Snake.Moves), key);
+            lastMove = move;
+        } catch(Exception err)
+        {
+            Console.WriteLine(err.Message);
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Reset();
+    }
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        fieldElem.FocusAsync();
+        return base.OnAfterRenderAsync(firstRender);
+    }
+}
